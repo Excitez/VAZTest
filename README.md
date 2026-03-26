@@ -29,6 +29,7 @@
 | `subnet-gitlab` | VM с GitLab CE |
 | `subnet-cicd` | VM с GitLab Runner |
 | `subnet-k8s` | Узлы Kubernetes-кластера |
+
 ![alt text](image.png)
 ### 2.2. Группы безопасности
 
@@ -89,6 +90,7 @@
 | TCP | 443 | 0.0.0.0/0 | HTTPS (registry, интернет) |
 | TCP | 80 | 0.0.0.0/0 | HTTP |
 | Any | — | 10.10.1.13/32 | Трафик к GitLab VM |
+
 ![alt text](image-1.png)
 ### 2.3. Сервисный аккаунт
 
@@ -100,11 +102,16 @@
 
 - `CI_COMMIT_SHORT_SHA` — для однозначной идентификации версии
 - `latest` — для удобства ручного использования
-![alt text](image-2.png)![alt text](image-3.png)
+
+![alt text](image-2.png)
+![alt text](image-3.png)
 ### 2.5. Kubernetes-кластер
 
 Развёрнут управляемый Kubernetes-кластер (Yandex Managed Service for Kubernetes). Для доступа из CI/CD создан статический `ServiceAccount` с токеном без срока действия. Kubeconfig в формате base64 хранится в GitLab как защищённая переменная `KUBECONFIG_DATA`.
-![alt text](image-4.png)![alt text](image-5.png)![alt text](image-6.png)
+
+![alt text](image-4.png)
+![alt text](image-5.png)
+![alt text](image-6.png)
 ---
 
 ## 3. Развёртывание GitLab CE
@@ -130,17 +137,24 @@ gitlab-ctl reconfigure
 |---|---|---|
 | devops | Maintainer | Есть |
 | developer | Developer | Нет |
+
 Cторона разработчика
+
 ![alt text](image-8.png)
+
 Сторона девопса 
+
 ![alt text](image-7.png)
+
 ### 3.2. Защита ветки main
 
 - Прямой push в `main` запрещён
 - Изменения принимаются только через Merge Request
 - Для слияния требуется апрув от двух участников
 - Пайплайн запускается автоматически после слияния MR
+
 ![alt text](image-9.png)
+
 ### 3.3. Переменные CI/CD
 
 Переменные заданы на уровне группы `microservices` — разработчики их не видят:
@@ -150,6 +164,7 @@ Cторона разработчика
 | `YC_REGISTRY_ID` | Идентификатор Container Registry в Yandex Cloud |
 | `YC_SA_JSON_KEY` | JSON-ключ сервисного аккаунта для `docker login` |
 | `KUBECONFIG_DATA` | Kubeconfig в base64 для доступа к Kubernetes-кластеру |
+
 ![alt text](image-10.png)
 ---
 
@@ -165,7 +180,9 @@ Cторона разработчика
 | Уровень регистрации | Группа microservices |
 
 Регистрация на уровне группы обеспечивает доступность раннера для всех проектов группы.
+
 ![alt text](image-11.png)
+
 ![alt text](image-12.png)
 ---
 
@@ -520,31 +537,45 @@ deploy:helm:
 
 ### 9.2. Линтеры
 Go
+
 ![alt text](image-13.png)
 ![alt text](image-14.png)
+
 Python
+
 ![alt text](image-16.png)
 ![alt text](image-17.png)
+
 Java
+
 ![alt text](image-15.png)
+
 C#
+
 ![alt text](image-18.png)
+
 Docker
+
 ![alt text](image-19.png)
 
 ### 9.3. Билд
 
 ![alt text](image-21.png)
+
 ![alt text](image-22.png)
 
 ### 9.4. Деплой
 
 Кубер
+
 ![alt text](image-23.png)
+
 Хелм
+
 ![alt text](image-24.png)
 
 Поднятые поды
+
 ![alt text](image-25.png)
 
 Работающая страница
